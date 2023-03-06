@@ -1,0 +1,26 @@
+# Importar e instalar bliblioteca REQUESTS pois ela é quem faz a requisição
+# Importar JSON pois é a forma como faz a conxão com as APIs
+
+import requests
+import json
+
+# Variavel cotações recebe a requisição (resquests) .GET (Pegar as informações) + LINK da API
+# A variável cotacoes irá armazenar as informações da API, por isso será usada em todas as requisições
+# Resposta será 200 que indica OK na conexão da API
+# Necessário .JSON para retornar o formato correto das moedas e não apenas 200
+
+cotacoes = requests.get("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL")
+cotacoes = cotacoes.json()
+
+# Pegar apenas as informações GERAIS do Dolar
+# BID - Pq é a cotação real e não outras informações Gerais como HIGH/LOW
+
+cotacoes_dolar = cotacoes['USDBRL']['bid']
+print(cotacoes_dolar)
+
+cotacoes_euro = cotacoes['EURBRL']['bid']
+print(cotacoes_euro)
+
+cotacoes_btc = cotacoes['BTCBRL']['bid']
+print(cotacoes_btc)
+
