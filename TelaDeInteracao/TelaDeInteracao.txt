@@ -1,0 +1,57 @@
+# Importar e instalar bliblioteca REQUESTS pois ela é quem faz a requisição
+# Importar JSON pois é a forma como faz a conxão com as APIs
+# Importar TUDO ( * ) do TKINTER para usar a tela
+
+import requests
+import json
+from tkinter import *
+
+# Variavel cotações recebe a requisição (resquests) .GET (Pegar as informações) + LINK da API
+# A variável cotacoes irá armazenar as informações da API, por isso será usada em todas as requisições
+# Resposta será 200 que indica OK na conexão da API
+# Necessário .JSON para retornar o formato correto das moedas e não apenas 200
+
+def pegar_cotacoes():
+    cotacoes = requests.get("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL")
+    cotacoes = cotacoes.json()
+
+# Pegar apenas as informações GERAIS do Dolar
+# BID - Pq é a cotação real e não outras informações Gerais como HIGH/LOW
+
+    cotacoes_dolar = cotacoes['USDBRL']['bid']
+    cotacoes_euro = cotacoes['EURBRL']['bid']
+    cotacoes_btc = cotacoes['BTCBRL']['bid']
+
+# Necessário criar essa variável que irá trazer as cotações das 3 moedas
+# F na frente das 3 aspas pois existe uma resposta variável entre { }
+# 3 aspas pois é um conjunto de textos
+
+    texto_cotacoes = f'''
+    DOLAR: {cotacoes_dolar}
+    EURO: {cotacoes_euro}
+    BTC: {cotacoes_btc}
+    '''
+
+# Nesse momento ao invés de printar no console irá puxar o TEXTO2 do TK
+    # E no TEXT em branco entrará os dados da variável TEXTO_COTACOES
+
+    texto2['text'] = texto_cotacoes
+
+# Necessário chamar a bliblioteca e manter aberta a janela com o MAINLOOP
+
+interface = Tk()
+interface.title('COTAÇÕES')
+texto1 = Label(interface, text='Clique no botão para ver a cotação atual')
+texto1.grid(column=0, row=0, padx=10, pady=10)
+
+# O botão chamará a função das cotações
+
+botao = Button(interface, text='COTAÇÕES ATUAIS', command=pegar_cotacoes)
+botao.grid(column=0, row=1, padx=10, pady=10)
+
+# O texto está em branco pois será printado dentro da função com a variavel TEXTO_COTAÇÔES
+texto2 = Label(interface, text='')
+texto2.grid(column=0, row=2, padx=10, pady=10)
+
+interface.mainloop()
+
